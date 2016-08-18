@@ -15,10 +15,10 @@ var api = {
    * Given a movie object, returns the url to its poster image
    */
   posterUrl: function(movie) {
-    // TODO 4b
+    // TODO 4b (DONE)
     // implement this function
-
-    return "http://images5.fanpop.com/image/photos/25100000/movie-poster-rapunzel-and-eugene-25184488-300-450.jpg" 
+    var baseImageUrl = "http://image.tmdb.org/t/p/w300/";
+    return baseImageUrl + movie.poster_path; 
   }
 }
 
@@ -77,36 +77,42 @@ function render() {
   // insert watchlist items
   model.watchlistItems.forEach(function(movie) {
     var title = $("<h6></h6>")
-    .text(movie.original_title);
-    
+      .text(movie.original_title);
+
     var panelHeading = $("<div></div>")
       .attr("class", "panel-heading")
       .append(title);
 
     // TODO 1 (DONE)
-    // add an "I watched it" button and append it below the title-add under .append(title)
+    // add an "I watched it" button and append it below the title
     // Clicking should remove this movie from the watchlist and re-render
     var button = $("<button></button>")
-      .text("I watched it!")
+      .text("I watched it")
       .attr("class", "btn btn-danger")
       .click(function() {
-        //remove this movie from the model.watchlistItems
+        // remove this movie from the model.watchlistItems
         var index = model.watchlistItems.indexOf(movie);
         model.watchlistItems.splice(index, 1);
-        //re-render
+        // re-render
         render();
       });
       
-    var panelBody=$("<div></div>")
-    .attr("class", "panel-body")
-    .append(button);
     
     // TODO 2i (DONE)
     // apply the classes "btn btn-danger" to the "I watched it button"
 
-    // TODO 4a
+    // TODO 4a (DONE)
     // add a poster image and append it inside the 
     // panel body above the button
+    var poster = $("<img></img>")
+      .attr("src", api.posterUrl(movie))
+      .attr("class", "img-responsive");
+    
+    var panelBody = $("<div></div>")
+      .attr("class", "panel-body")
+      .append(poster)
+      .append(button);
+      
 
     // TODO 2g (DONE)
     // re-implement the li as a bootstrap panel with a heading and a body
@@ -126,7 +132,7 @@ function render() {
     // You'll also need to make changes in index.html.
     // use the following BS classes:
     // "list-group", "list-group-item", btn", "btn-primary", 
-
+    
     var title = $("<h4></h4>").text(movie.original_title);
 
     var button = $("<button></button>")
@@ -144,8 +150,7 @@ function render() {
     var itemView = $("<li></li>")
       .append(title)
       .append(overview)
-      .append(button)
-      .attr("class", "list-group-item");
+      .append(button);
       
     // append the itemView to the list
     $("#section-browse ul").append(itemView);
